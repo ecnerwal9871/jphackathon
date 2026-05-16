@@ -1,0 +1,20 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #111827;
+  --background: #f9fafb;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+button, a[role="button"], input[type="submit"] {
+  min-height: 48px;
+  min-width: 48px;
+}
