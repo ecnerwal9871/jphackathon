@@ -1,4 +1,4 @@
-﻿import type { Match } from '@/lib/types';
+import type { Match } from '@/lib/types';
 import Link from 'next/link';
 import { clsx } from 'clsx';
 

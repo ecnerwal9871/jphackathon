@@ -1,4 +1,4 @@
-﻿export type TripType = 'request' | 'volunteer';
+export type TripType = 'request' | 'volunteer';
 export type TripStatus = 'open' | 'matched' | 'closed';
 export type MatchStatus = 'pending' | 'confirmed' | 'cancelled';
 

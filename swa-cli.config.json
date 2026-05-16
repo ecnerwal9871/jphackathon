@@ -1,0 +1,18 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "flightbuddy": {
+      "appLocation": "app",
+      "apiLocation": "api",
+      "outputLocation": ".next",
+      "appBuildCommand": "npm run build",
+      "apiBuildCommand": "npm run build",
+      "run": "npm run dev",
+      "appDevserverUrl": "http://localhost:3000",
+      "env": {
+        "GOOGLE_CLIENT_ID": "local-dev-placeholder",
+        "GOOGLE_CLIENT_SECRET": "local-dev-placeholder"
+      }
+    }
+  }
+}

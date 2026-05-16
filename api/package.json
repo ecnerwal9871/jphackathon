@@ -1,8 +1,8 @@
-﻿{
+{
   "name": "flightbuddy-api",
   "version": "1.0.0",
   "description": "FlightBuddy Azure Functions API",
-  "main": "dist/src/functions/*.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -16,6 +16,7 @@
     "@azure/identity": "^4.0.0",
     "@azure/communication-email": "^1.0.0",
     "@azure/keyvault-secrets": "^4.8.0",
+    "applicationinsights": "^3.4.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

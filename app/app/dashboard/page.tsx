@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useEffect, useState } from 'react';
 import { getMyTrips } from '@/lib/api';
 import TripCard from '@/components/TripCard';

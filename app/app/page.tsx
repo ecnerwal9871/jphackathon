@@ -1,4 +1,4 @@
-﻿import { getLoginUrl } from '@/lib/auth';
+import { getLoginUrl } from '@/lib/auth';
 
 export default function LandingPage() {
   return (

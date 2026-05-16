@@ -1,4 +1,4 @@
-﻿import { SwaUser } from './types';
+import { SwaUser } from './types';
 
 export async function getCurrentUser(): Promise<SwaUser | null> {
   try {

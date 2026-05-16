@@ -1,4 +1,4 @@
-﻿import { EmailClient } from '@azure/communication-email';
+import { EmailClient } from '@azure/communication-email';
 import { DefaultAzureCredential } from '@azure/identity';
 
 const endpoint = process.env.ACS_ENDPOINT!;

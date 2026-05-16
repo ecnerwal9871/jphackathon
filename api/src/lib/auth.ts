@@ -1,4 +1,4 @@
-﻿import { HttpRequest } from '@azure/functions';
+import { HttpRequest } from '@azure/functions';
 
 export interface CallerIdentity {
   userId: string;

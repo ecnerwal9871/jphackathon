@@ -1,9 +1,12 @@
-﻿import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { initTelemetry } from '../lib/telemetry';
 import { containers } from '../lib/cosmos';
 import { getCallerIdentity } from '../lib/auth';
 import { sendMatchNotification } from '../lib/email';
 import type { Match, Trip } from '../lib/types';
 import { v4 as uuidv4 } from 'uuid';
+
+initTelemetry();
 
 async function matchesHandler(req: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   const caller = getCallerIdentity(req);

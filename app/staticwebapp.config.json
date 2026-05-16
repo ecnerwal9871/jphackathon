@@ -1,4 +1,4 @@
-﻿{
+{
   "auth": {
     "identityProviders": {
       "google": {
@@ -19,10 +19,7 @@
     { "route": "/profile", "allowedRoles": ["authenticated"] }
   ],
   "responseOverrides": {
-    "401": {
-      "redirect": "/.auth/login/google",
-      "statusCode": 302
-    }
+    "401": { "redirect": "/.auth/login/google", "statusCode": 302 }
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",

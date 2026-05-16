@@ -1,4 +1,4 @@
-﻿name: Deploy FlightBuddy to Azure Static Web Apps
+ame: Deploy FlightBuddy to Azure Static Web Apps
 
 on:
   push:

@@ -1,4 +1,4 @@
-﻿import type { Trip } from '@/lib/types';
+import type { Trip } from '@/lib/types';
 import { clsx } from 'clsx';
 
 interface Props {

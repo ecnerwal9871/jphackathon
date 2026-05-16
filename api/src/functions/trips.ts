@@ -1,8 +1,11 @@
-﻿import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from '@azure/functions';
+import { initTelemetry } from '../lib/telemetry';
 import { containers } from '../lib/cosmos';
 import { getCallerIdentity } from '../lib/auth';
 import type { Trip } from '../lib/types';
 import { v4 as uuidv4 } from 'uuid';
+
+initTelemetry();
 
 async function tripsHandler(req: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   void context;
