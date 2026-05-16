@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 # FlightBuddy – One-shot Azure provisioning script
 # Usage: ./deploy.sh
 # Prerequisites: Azure CLI logged in (az login), Bicep installed (az bicep install)
@@ -6,7 +6,7 @@
 set -e
 
 RESOURCE_GROUP="rg-flightbuddy-prod"
-LOCATION="eastus"
+LOCATION="eastus2"
 BASE_NAME="flightbuddy"
 
 echo "==================================================="

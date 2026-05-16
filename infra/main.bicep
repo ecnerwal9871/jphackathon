@@ -1,4 +1,4 @@
-description('Base name for all resources (e.g. flightbuddy)')
+@description('Base name for all resources (e.g. flightbuddy)')
 param baseName string = 'flightbuddy'
 
 @description('Azure region for all resources')
@@ -75,15 +75,7 @@ resource tripsContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/cont
       indexingPolicy: {
         indexingMode: 'consistent'
         automatic: true
-        includedPaths: [
-          { path: '/fromAirport/?' }
-          { path: '/toAirport/?' }
-          { path: '/airline/?' }
-          { path: '/travelDate/?' }
-          { path: '/status/?' }
-          { path: '/type/?' }
-          { path: '/userId/?' }
-        ]
+        includedPaths: [{ path: '/*' }]
         excludedPaths: [{ path: '/"_etag"/?' }]
       }
     }
@@ -100,12 +92,7 @@ resource matchesContainer 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/co
       indexingPolicy: {
         indexingMode: 'consistent'
         automatic: true
-        includedPaths: [
-          { path: '/requesterId/?' }
-          { path: '/volunteerId/?' }
-          { path: '/status/?' }
-          { path: '/id/?' }
-        ]
+        includedPaths: [{ path: '/*' }]
         excludedPaths: [{ path: '/"_etag"/?' }]
       }
     }
