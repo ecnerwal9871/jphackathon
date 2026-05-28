@@ -1,4 +1,4 @@
-import { getLoginUrl } from '@/lib/auth';
+import Link from 'next/link';
 
 export default function LandingPage() {
   return (
@@ -11,18 +11,18 @@ export default function LandingPage() {
           FlightBuddy connects elderly solo travellers with kind volunteers on the same flight for assistance, companionship, and peace of mind.
         </p>
         <div className="flex justify-center gap-4 flex-wrap">
-          <a
-            href={getLoginUrl()}
+          <Link
+            href="/request"
             className="bg-brand-600 hover:bg-brand-700 text-white font-bold px-8 py-4 rounded-xl text-xl shadow-lg transition"
           >
             I Need Help Travelling
-          </a>
-          <a
-            href={getLoginUrl()}
+          </Link>
+          <Link
+            href="/volunteer"
             className="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-xl shadow-lg transition"
           >
             I Want to Volunteer
-          </a>
+          </Link>
         </div>
       </section>
 

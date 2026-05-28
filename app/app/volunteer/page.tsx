@@ -20,6 +20,17 @@ type FormData = z.infer<typeof schema>;
 
 const LANGUAGES = ['English', 'Hindi', 'Tamil', 'Spanish', 'French', 'Arabic', 'Mandarin', 'Other'];
 
+const AIRLINES = [
+  'Air Canada', 'Air France', 'Air India', 'Alaska Airlines', 'American Airlines',
+  'ANA (All Nippon Airways)', 'British Airways', 'Cathay Pacific', 'Delta Air Lines',
+  'Emirates', 'Etihad Airways', 'EVA Air', 'Frontier Airlines', 'Hawaiian Airlines',
+  'IndiGo', 'Japan Airlines', 'JetBlue Airways', 'KLM Royal Dutch Airlines',
+  'Korean Air', 'Lufthansa', 'Malaysia Airlines', 'Qantas', 'Qatar Airways',
+  'Singapore Airlines', 'Southwest Airlines', 'Spirit Airlines', 'Sri Lankan Airlines',
+  'Swiss International Air Lines', 'Thai Airways', 'Turkish Airlines',
+  'United Airlines', 'Vietnam Airlines', 'Virgin Atlantic', 'WestJet', 'Other',
+];
+
 export default function VolunteerPage() {
   const router = useRouter();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormData>({
@@ -58,7 +69,10 @@ export default function VolunteerPage() {
           </div>
           <div>
             <label className="block text-lg font-semibold mb-1">Airline *</label>
-            <input {...register('airline')} placeholder="e.g. British Airways" className="w-full border-2 rounded-xl px-4 py-3 text-lg" />
+            <select {...register('airline')} className="w-full border-2 rounded-xl px-4 py-3 text-lg">
+              <option value="">Select airline...</option>
+              {AIRLINES.map(a => <option key={a} value={a}>{a}</option>)}
+            </select>
             {errors.airline && <p className="text-red-600">{errors.airline.message}</p>}
           </div>
         </div>

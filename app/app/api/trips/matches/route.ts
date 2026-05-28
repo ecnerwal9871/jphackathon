@@ -7,7 +7,8 @@ export async function GET(req: NextRequest) {
   const caller = getCallerIdentity(req);
   if (!caller) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { resources: myVolunteerTrips } = await containers.trips().items.query<Trip>({
+  try {
+    const { resources: myVolunteerTrips } = await containers.trips().items.query<Trip>({
     query: "SELECT * FROM c WHERE c.userId = @userId AND c.type = 'volunteer' AND c.status = 'open'",
     parameters: [{ name: '@userId', value: caller.userId }],
   }).fetchAll();
@@ -37,4 +38,8 @@ export async function GET(req: NextRequest) {
 
   const safe = resources.map(({ contactNumber: _cn, ...rest }) => rest);
   return NextResponse.json(safe);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }

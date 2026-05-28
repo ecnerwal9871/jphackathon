@@ -8,20 +8,26 @@ export async function GET(req: NextRequest) {
   const caller = getCallerIdentity(req);
   if (!caller) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { resources } = await containers.trips().items.query<Trip>({
-    query: 'SELECT * FROM c WHERE c.userId = @userId ORDER BY c.createdAt DESC',
-    parameters: [{ name: '@userId', value: caller.userId }],
-  }).fetchAll();
+  try {
+    const { resources } = await containers.trips().items.query<Trip>({
+      query: 'SELECT * FROM c WHERE c.userId = @userId ORDER BY c.createdAt DESC',
+      parameters: [{ name: '@userId', value: caller.userId }],
+    }).fetchAll();
 
-  const safe = resources.map(({ contactNumber: _cn, ...rest }) => rest);
-  return NextResponse.json(safe);
+    const safe = resources.map(({ contactNumber: _cn, ...rest }) => rest);
+    return NextResponse.json(safe);
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
   const caller = getCallerIdentity(req);
   if (!caller) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const body = await req.json() as Partial<Trip>;
+  try {
+    const body = await req.json() as Partial<Trip>;
   let userName = caller.userDetails.split('@')[0];
   try {
     const { resource: user } = await containers.users().item(caller.userId, caller.userId).read<{ name?: string }>();
@@ -51,6 +57,10 @@ export async function POST(req: NextRequest) {
   };
 
   await containers.trips().items.create(trip);
-  const { contactNumber: _cn, ...safeTrip } = trip;
-  return NextResponse.json(safeTrip, { status: 201 });
+    const { contactNumber: _cn, ...safeTrip } = trip;
+    return NextResponse.json(safeTrip, { status: 201 });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Internal server error';
+    return NextResponse.json({ error: msg }, { status: 500 });
+  }
 }

@@ -17,7 +17,14 @@ export default function MatchesPage() {
         const vol = myTrips.find(t => t.type === 'volunteer' && t.status === 'open');
         setMyVolunteerTrip(vol || null);
       })
-      .catch(e => setError((e as Error).message))
+      .catch(e => {
+        const msg = (e as Error).message || 'Unknown error';
+        if (msg.includes('COSMOS_ENDPOINT') || msg.includes('API error')) {
+          setError('Unable to connect to the database. Please ensure the backend is configured and running.');
+        } else {
+          setError(msg);
+        }
+      })
       .finally(() => setLoading(false));
   }, []);
 

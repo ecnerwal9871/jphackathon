@@ -21,6 +21,8 @@ export default function Navbar() {
           {user ? (
             <>
               <Link href="/dashboard" className="hover:underline">Dashboard</Link>
+              <Link href="/request" className="hover:underline">Request Help</Link>
+              <Link href="/volunteer" className="hover:underline">Volunteer</Link>
               <Link href="/matches" className="hover:underline">Find Matches</Link>
               <Link href="/profile" className="hover:underline">Profile</Link>
               <a href={getLogoutUrl()} className="bg-white text-brand-700 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
