@@ -9,6 +9,7 @@ export default function MatchesPage() {
   const [myVolunteerTrip, setMyVolunteerTrip] = useState<Trip | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
   useEffect(() => {
     Promise.all([getMatchingTrips(), getMyTrips()])
@@ -30,35 +31,59 @@ export default function MatchesPage() {
 
   async function handleHelp(requestTrip: Trip) {
     if (!myVolunteerTrip) return;
+    setSuccessMsg('');
+    setError('');
     try {
       await createMatch(requestTrip.id, myVolunteerTrip.id);
       setMatchingTrips(prev => prev.filter(t => t.id !== requestTrip.id));
-      alert('Match created! Both of you will receive an email notification.');
+      setSuccessMsg('Your offer has been sent! The traveller will be notified by email. They must confirm before contact details are shared.');
     } catch (e: unknown) {
-      alert((e as Error).message);
+      setError((e as Error).message || 'Something went wrong. Please try again.');
     }
   }
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold text-brand-900">Available Requests</h1>
-      {!myVolunteerTrip && !loading && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-5 text-lg text-yellow-800">
-          You need to <a href="/volunteer" className="underline font-semibold">post a volunteer trip</a> first before you can help someone.
+      <h1 className="text-3xl font-bold text-brand-900">People Who May Need Help on Your Flight</h1>
+
+      {successMsg && (
+        <div className="bg-green-50 border border-green-200 rounded-2xl p-5 text-lg text-green-800">
+          ✅ {successMsg}
         </div>
       )}
-      {loading && <p className="text-gray-500 text-lg">Loading requests...</p>}
-      {error && <p className="text-red-600 text-lg">{error}</p>}
-      {matchingTrips.length === 0 && !loading && (
-        <p className="text-gray-500 text-lg">No matching requests right now. Check back later!</p>
+
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-2xl p-5 text-lg text-red-700">
+          ⚠️ {error}
+        </div>
       )}
+
+      {!myVolunteerTrip && !loading && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 text-lg text-yellow-800 space-y-3">
+          <p className="font-semibold">You need to post a volunteer trip first.</p>
+          <p>Tell us your flight details so we can show you travellers on the same route.</p>
+          <a href="/volunteer" className="inline-block bg-green-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-green-700">
+            🤝 Post a volunteer trip
+          </a>
+        </div>
+      )}
+
+      {loading && <p className="text-gray-700 text-lg">Looking for matching requests...</p>}
+
+      {matchingTrips.length === 0 && !loading && myVolunteerTrip && (
+        <div className="bg-white border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center space-y-3">
+          <p className="text-lg text-gray-700">No travellers need help on your route right now.</p>
+          <p className="text-base text-gray-600">Check back later — new requests are posted daily.</p>
+        </div>
+      )}
+
       <div className="grid gap-6 md:grid-cols-2">
         {matchingTrips.map(trip => (
           <TripCard
             key={trip.id}
             trip={trip}
             onAction={myVolunteerTrip ? () => handleHelp(trip) : undefined}
-            actionLabel="I'll Help"
+            actionLabel="🤝 Offer to help this traveller"
           />
         ))}
       </div>

@@ -18,3 +18,10 @@ button, a[role="button"], input[type="submit"] {
   min-height: 48px;
   min-width: 48px;
 }
+
+/* Visible focus rings for keyboard navigation */
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

@@ -41,25 +41,30 @@ export default function MatchDetailPage() {
   if (!match) return <div className="p-8 text-xl">Match not found</div>;
 
   const statusColor = match.status === 'confirmed' ? 'text-green-600' : match.status === 'cancelled' ? 'text-red-600' : 'text-yellow-600';
+  const statusLabel = match.status === 'confirmed' ? '✅ Confirmed — contact details shared'
+    : match.status === 'cancelled' ? '❌ Cancelled'
+    : '🟡 Waiting for confirmation';
 
   return (
     <main className="max-w-2xl mx-auto py-10 px-4">
-      <Link href="/dashboard" className="text-blue-600 text-lg hover:underline">&larr; Back to Dashboard</Link>
-      <h1 className="text-4xl font-bold mt-6 mb-4">Match Details</h1>
+      <Link href="/dashboard" className="text-brand-600 text-lg hover:underline font-semibold">← Back to your dashboard</Link>
+      <h1 className="text-3xl font-bold mt-6 mb-4 text-brand-900">
+        {match.status === 'confirmed' ? 'Your Confirmed Travel Connection' : 'Review This Match'}
+      </h1>
 
-      <div className="bg-white rounded-2xl shadow p-6 space-y-4 border border-gray-200">
+      <div className="bg-white rounded-2xl shadow p-6 space-y-5 border border-gray-200">
         <div>
-          <span className="text-gray-500 text-lg">Status: </span>
-          <span className={`font-bold text-xl uppercase ${statusColor}`}>{match.status}</span>
+          <span className="text-gray-700 text-lg">Status: </span>
+          <span className={`font-bold text-xl ${statusColor}`}>{statusLabel}</span>
         </div>
-        <div className="grid grid-cols-2 gap-4 text-lg">
-          <div>
-            <p className="text-gray-500">Traveller</p>
-            <p className="font-semibold text-xl">{match.requesterName}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-lg">
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="text-gray-600">Traveller</p>
+            <p className="font-bold text-xl">{match.requesterName}</p>
           </div>
-          <div>
-            <p className="text-gray-500">Volunteer</p>
-            <p className="font-semibold text-xl">{match.volunteerName}</p>
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="text-gray-600">Volunteer</p>
+            <p className="font-bold text-xl">{match.volunteerName}</p>
           </div>
         </div>
 
@@ -76,17 +81,18 @@ export default function MatchDetailPage() {
         )}
 
         {match.status === 'pending' && (
-          <div className="mt-4 p-4 bg-yellow-50 rounded-xl border border-yellow-200">
-            <p className="text-lg text-yellow-800 mb-4">
-              A volunteer has offered to help! Confirm the match to exchange contact details.
-            </p>
-            <button
-              onClick={handleConfirm}
-              disabled={confirming}
-              className="bg-green-600 hover:bg-green-700 text-white text-xl font-bold py-3 px-8 rounded-xl disabled:opacity-50"
-            >
-              {confirming ? 'Confirming...' : '✅ Confirm Match'}
-            </button>
+          <div className="mt-4 p-5 bg-yellow-50 rounded-xl border border-yellow-200 space-y-4">
+            <p className="text-lg text-yellow-800 font-semibold">A volunteer has offered to help on your flight!</p>
+            <p className="text-base text-yellow-700">When you confirm, both of you will receive each other's contact details by email.</p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={handleConfirm}
+                disabled={confirming}
+                className="bg-green-600 hover:bg-green-700 text-white text-xl font-bold py-4 px-8 rounded-xl disabled:opacity-50 flex-1"
+              >
+                {confirming ? 'Confirming...' : '✅ Yes, connect us'}
+              </button>
+            </div>
           </div>
         )}
       </div>
