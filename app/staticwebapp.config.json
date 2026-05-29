@@ -10,6 +10,7 @@
     }
   },
   "routes": [
+    { "route": "/api/health", "allowedRoles": ["anonymous"] },
     { "route": "/api/*", "allowedRoles": ["authenticated"] },
     { "route": "/dashboard", "allowedRoles": ["authenticated"] },
     { "route": "/request", "allowedRoles": ["authenticated"] },
