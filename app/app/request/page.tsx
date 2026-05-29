@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { createTrip } from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const schema = z.object({
   fromAirport: z.string().length(3, 'Must be a 3-letter IATA code').toUpperCase(),
@@ -37,9 +38,16 @@ export default function RequestPage() {
     resolver: zodResolver(schema),
   });
 
+  const [submitError, setSubmitError] = useState('');
+
   async function onSubmit(data: FormData) {
-    await createTrip({ ...data, type: 'request' });
-    router.push('/dashboard');
+    setSubmitError('');
+    try {
+      await createTrip({ ...data, type: 'request' });
+      window.location.href = '/dashboard';
+    } catch (e) {
+      setSubmitError((e as Error).message || 'Failed to submit request');
+    }
   }
 
   return (
@@ -104,6 +112,9 @@ export default function RequestPage() {
           className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-4 rounded-xl text-xl transition disabled:opacity-60">
           {isSubmitting ? 'Submitting...' : 'Post Request'}
         </button>
+        {submitError && (
+          <p className="text-red-600 text-lg font-semibold text-center">{submitError}</p>
+        )}
       </form>
     </div>
   );

@@ -8,11 +8,12 @@ import Link from 'next/link';
 export default function DashboardPage() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getMyTrips()
       .then(setTrips)
-      .catch(console.error)
+      .catch(e => setError((e as Error).message || 'Failed to load trips'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -34,6 +35,7 @@ export default function DashboardPage() {
       </div>
 
       {loading && <p className="text-lg text-gray-500">Loading your trips...</p>}
+      {error && <p className="text-lg text-red-600">{error}</p>}
 
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold text-gray-800">My Assistance Requests</h2>
