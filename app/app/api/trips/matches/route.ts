@@ -13,7 +13,9 @@ export async function GET(req: NextRequest) {
     parameters: [{ name: '@userId', value: caller.userId }],
   }).fetchAll();
 
-  if (myVolunteerTrips.length === 0) return NextResponse.json([]);
+  if (myVolunteerTrips.length === 0) {
+    return NextResponse.json({ debug: 'No volunteer trips found for user ' + caller.userId, results: [] });
+  }
 
   const vol = myVolunteerTrips[0];
   const date = new Date(vol.travelDate);
