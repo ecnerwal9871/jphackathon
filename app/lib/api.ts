@@ -17,12 +17,7 @@ export const createTrip = (data: Partial<Trip>) =>
 
 export const getMyTrips = () => apiFetch<Trip[]>('/api/trips');
 
-export const getMatchingTrips = async (): Promise<Trip[]> => {
-  const data = await apiFetch<Trip[] | { debug: string; results: Trip[] }>('/api/trips/matches');
-  if (Array.isArray(data)) return data;
-  console.log('[FlightBuddy debug]', data.debug);
-  return data.results;
-};
+export const getMatchingTrips = () => apiFetch<Trip[]>('/api/trips/matches');
 
 export const createMatch = (requestTripId: string, volunteerTripId: string) =>
   apiFetch<Match>('/api/matches', {

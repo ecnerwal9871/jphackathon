@@ -14,30 +14,42 @@ export async function GET(req: NextRequest) {
   }).fetchAll();
 
   if (myVolunteerTrips.length === 0) {
-    return NextResponse.json({ debug: 'No volunteer trips found for user ' + caller.userId, results: [] });
+    return NextResponse.json([]);
   }
 
-  const vol = myVolunteerTrips[0];
-  const date = new Date(vol.travelDate);
-  const dayBefore = new Date(date); dayBefore.setDate(date.getDate() - 1);
-  const dayAfter = new Date(date); dayAfter.setDate(date.getDate() + 1);
+  // Build OR conditions for ALL volunteer trips so we match against every route
+  const allMatches: Trip[] = [];
+  const seenIds = new Set<string>();
 
-  const { resources } = await containers.trips().items.query<Trip>({
-    query: `SELECT * FROM c
-      WHERE c.type = 'request' AND c.status = 'open'
-      AND LOWER(c.fromAirport) = LOWER(@from) AND LOWER(c.toAirport) = LOWER(@to)
-      AND LOWER(c.airline) = LOWER(@airline)
-      AND c.travelDate >= @dateFrom AND c.travelDate <= @dateTo`,
-    parameters: [
-      { name: '@from', value: vol.fromAirport },
-      { name: '@to', value: vol.toAirport },
-      { name: '@airline', value: vol.airline },
-      { name: '@dateFrom', value: dayBefore.toISOString().slice(0, 10) },
-      { name: '@dateTo', value: dayAfter.toISOString().slice(0, 10) },
-    ],
-  }).fetchAll();
+  for (const vol of myVolunteerTrips) {
+    const date = new Date(vol.travelDate);
+    const dayBefore = new Date(date); dayBefore.setDate(date.getDate() - 1);
+    const dayAfter = new Date(date); dayAfter.setDate(date.getDate() + 1);
 
-  const safe = resources.map(({ contactNumber: _cn, ...rest }) => rest);
+    const { resources } = await containers.trips().items.query<Trip>({
+      query: `SELECT * FROM c
+        WHERE c.type = 'request' AND c.status = 'open'
+        AND LOWER(c.fromAirport) = LOWER(@from) AND LOWER(c.toAirport) = LOWER(@to)
+        AND LOWER(c.airline) = LOWER(@airline)
+        AND c.travelDate >= @dateFrom AND c.travelDate <= @dateTo`,
+      parameters: [
+        { name: '@from', value: vol.fromAirport },
+        { name: '@to', value: vol.toAirport },
+        { name: '@airline', value: vol.airline },
+        { name: '@dateFrom', value: dayBefore.toISOString().slice(0, 10) },
+        { name: '@dateTo', value: dayAfter.toISOString().slice(0, 10) },
+      ],
+    }).fetchAll();
+
+    for (const r of resources) {
+      if (!seenIds.has(r.id)) {
+        seenIds.add(r.id);
+        allMatches.push(r);
+      }
+    }
+  }
+
+  const safe = allMatches.map(({ contactNumber: _cn, ...rest }) => rest);
   return NextResponse.json(safe);
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Internal server error';
