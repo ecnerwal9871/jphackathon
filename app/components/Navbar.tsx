@@ -37,6 +37,7 @@ export default function Navbar() {
               <Link href="/volunteer" className="hover:underline underline-offset-4">Volunteer</Link>
               <Link href="/matches" className="hover:underline underline-offset-4">Find Matches</Link>
               <Link href="/profile" className="hover:underline underline-offset-4">Profile</Link>
+              <span className="text-brand-100 font-medium text-base">👤 {user.userDetails}</span>
               <a href={getLogoutUrl()} className="bg-white text-brand-700 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100">
                 Sign Out
               </a>
@@ -59,6 +60,7 @@ export default function Navbar() {
               <Link href="/volunteer" onClick={() => setMenuOpen(false)} className="block py-2 text-lg hover:underline">Volunteer</Link>
               <Link href="/matches" onClick={() => setMenuOpen(false)} className="block py-2 text-lg hover:underline">Find Matches</Link>
               <Link href="/profile" onClick={() => setMenuOpen(false)} className="block py-2 text-lg hover:underline">Profile</Link>
+              <div className="py-2 text-brand-100 font-medium">👤 {user.userDetails}</div>
               <a href={getLogoutUrl()} className="block bg-white text-brand-700 font-semibold px-4 py-3 rounded-lg text-center text-lg mt-2">
                 Sign Out
               </a>
