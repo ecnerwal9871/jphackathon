@@ -23,16 +23,15 @@ export async function GET(req: NextRequest) {
   const { resources } = await containers.trips().items.query<Trip>({
     query: `SELECT * FROM c
       WHERE c.type = 'request' AND c.status = 'open'
-      AND c.fromAirport = @from AND c.toAirport = @to AND c.airline = @airline
-      AND c.travelDate >= @dateFrom AND c.travelDate <= @dateTo
-      AND c.userId != @myUserId`,
+      AND LOWER(c.fromAirport) = LOWER(@from) AND LOWER(c.toAirport) = LOWER(@to)
+      AND LOWER(c.airline) = LOWER(@airline)
+      AND c.travelDate >= @dateFrom AND c.travelDate <= @dateTo`,
     parameters: [
       { name: '@from', value: vol.fromAirport },
       { name: '@to', value: vol.toAirport },
-      { name: '@airline', value: vol.airline.toLowerCase() },
+      { name: '@airline', value: vol.airline },
       { name: '@dateFrom', value: dayBefore.toISOString().slice(0, 10) },
       { name: '@dateTo', value: dayAfter.toISOString().slice(0, 10) },
-      { name: '@myUserId', value: caller.userId },
     ],
   }).fetchAll();
 
